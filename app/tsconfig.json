@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist",
+		"sourceMap": true,
+    "allowJs": true,
+    "moduleResolution": "node",
+		"target": "es5",
+		"module": "esnext",
+		"jsx": "react",
+    "esModuleInterop": true,
+    "baseUrl": "./src",
+		"paths": {
+      "@app/*": ["*"]
+    },
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "es2015",
+      "es2015.promise"
+    ]
+	}
+}
