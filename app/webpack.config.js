@@ -1,9 +1,8 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-	mode: 'development',
 	entry: {
 		app: path.join(__dirname, 'src', 'index.tsx')
 	},
@@ -12,6 +11,7 @@ module.exports = {
       directory: path.join(__dirname, 'dist'),
     },
     compress: true,
+		historyApiFallback: true,
     port: 9000,
   },
 	target: 'web',
@@ -29,6 +29,7 @@ module.exports = {
 	},
 	output: {
 		filename: '[name].js',
+		publicPath: '/',
 		path: path.resolve(__dirname, 'dist')
 	},
 	devtool: 'inline-source-map',
@@ -36,8 +37,8 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: path.join(__dirname, 'src', 'index.html')
 		}),
-		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify('development')
+		new webpack.EnvironmentPlugin({
+			NODE_ENVIRONMENT: JSON.stringify(process.env.NODE_ENV) || 'dev',
 		})
 	],
 }
