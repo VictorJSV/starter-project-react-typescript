@@ -1,5 +1,14 @@
 import * as React from 'react'
+import {
+	Divider,
+} from '@chakra-ui/react'
+import { Header } from '../../components/Header'
 
 export const Reports = () => {
-	return <h2>Reportes</h2>
+	return (
+		<>
+			<Header title="Reportes" />
+			<Divider />
+		</>
+	)
 }

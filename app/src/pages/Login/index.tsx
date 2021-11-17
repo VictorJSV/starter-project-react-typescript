@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from './provider'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -28,16 +28,25 @@ const schema = yup.object().shape({
 		.required('Campo requerido'),
 })
 
-export const Login = () => {
+export const Login = () => (
+	<Center height="100vh">
+		<Box background="white" p={12} rounded={6} boxShadow="base">
+			<Heading mb={6}>Iniciar Sesión</Heading>
+			<Form />
+		</Box>
+	</Center>
+)
+
+const Form = () => {
 	let navigate = useNavigate()
-	let location = useLocation()
 	let auth = useAuth()
+	const [submitting, setSubmitting] = React.useState(false)
 
 	const toast = useToast()
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isSubmitting },
+		formState: { errors },
 	} = useForm({
 		reValidateMode: 'onChange',
 		resolver: yupResolver(schema),
@@ -45,13 +54,15 @@ export const Login = () => {
 	})
 
 	const onSubmit = (values) => {
+		setSubmitting(true)
 		auth.signin(
 			values,
 			() => {
-				console.log(location)
+				setSubmitting(false)
 				navigate('/configurations')
 			},
 			(error) => {
+				setSubmitting(false)
 				toast({
 					title: error,
 					status: 'error',
@@ -63,36 +74,31 @@ export const Login = () => {
 	}
 
 	return (
-		<Center height="100vh">
-			<Box background="white" p={12} rounded={6} boxShadow="base">
-				<Heading mb={6}>Iniciar Sesión</Heading>
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<FormControl isInvalid={errors.email?.message} mb={6}>
-						<FormLabel htmlFor="email">Usuario</FormLabel>
-						<Input
-							{...register('email')}
-							name="email"
-							variant="outline"
-							background="white"
-						/>
-						<FormErrorMessage>{errors.email?.message}</FormErrorMessage>
-					</FormControl>
-					<FormControl isInvalid={errors.password?.message} mb={6}>
-						<FormLabel>Contraseña</FormLabel>
-						<Input
-							{...register('password')}
-							name="password"
-							type="password"
-							variant="outline"
-							background="white"
-						/>
-						<FormErrorMessage>{errors.password?.message}</FormErrorMessage>
-					</FormControl>
-					<Button type="submit" isLoading={isSubmitting} width="100%">
-						Ingresar
-					</Button>
-				</form>
-			</Box>
-		</Center>
+		<form onSubmit={handleSubmit(onSubmit)}>
+			<FormControl isInvalid={errors.email?.message} mb={6}>
+				<FormLabel htmlFor="email">Usuario</FormLabel>
+				<Input
+					{...register('email')}
+					name="email"
+					variant="outline"
+					background="white"
+				/>
+				<FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+			</FormControl>
+			<FormControl isInvalid={errors.password?.message} mb={6}>
+				<FormLabel>Contraseña</FormLabel>
+				<Input
+					{...register('password')}
+					name="password"
+					type="password"
+					variant="outline"
+					background="white"
+				/>
+				<FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+			</FormControl>
+			<Button type="submit" isLoading={submitting} width="100%">
+				Ingresar
+			</Button>
+		</form>
 	)
 }

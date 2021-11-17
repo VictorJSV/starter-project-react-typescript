@@ -27,6 +27,9 @@ const theme = extendTheme({
 					color: 'white',
 					_hover: {
 						bg: 'gray.800',
+						_disabled: {
+							bg: 'gray.800',
+						}
 					},
 					_active: {
 						bg: 'gray.700',

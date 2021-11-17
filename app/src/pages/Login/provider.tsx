@@ -1,14 +1,11 @@
 import * as React from 'react'
-import {
-	Navigate,
-	useLocation,
-} from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { getConfig } from '../../env'
 
 const AuthContext = React.createContext(null!)
 export const useAuth = () => {
-  return React.useContext(AuthContext);
+	return React.useContext(AuthContext)
 }
 
 export const AuthProvider = ({ children }) => {
@@ -22,14 +19,13 @@ export const AuthProvider = ({ children }) => {
 				data: values,
 			})
 			if (status === 200 && data.code === 100) {
-				//console.log(data)
 				setUser(data.data.userId)
 				callbackSuccess()
 				return
 			}
 			throw 'Error en el servidor'
 		} catch (error) {
-			callbackFailure(error)
+			callbackFailure(error.message ? 'Servidor no encontrado' : error)
 		}
 	}
 
